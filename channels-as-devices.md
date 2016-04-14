@@ -13,7 +13,7 @@ Peter wants to use the Octoblu Twitter Account in a flow.
 
 So Peter visits Octoblu and to add a new Twitter device. He gets bounced out to the **twitter-service** to start the process.
 
-The first thing that the **twitter-service** will need to do is verify that Peter has control over the Octoblu twitter account. It does this via Oauth 2.0, resulting in a twitter `account_id` and an `access_token`.
+The first thing that the **twitter-service** will need to do is verify that Peter has control over the Octoblu Twitter account. It does this via Oauth 2.0, resulting in a Twitter `account_id` and an `access_token`.
 
 The **twitter-service** creates a new **Credentials Device** to store the `account_id` and `access_token` in encrypted form. The **twitter-service** adds a `message.received` webhook to the **Credentials Device** with `generateAndForwardMeshbluCredentials`, so that it will post up to the **twitter-service** with a `uuid` and `token` of the **Credentials Device** whenever it receives a message. Peter does not get access to this device.
 
@@ -23,8 +23,20 @@ Now, whenever the **User Device** is messaged, the **Credentials Device** will r
 
 ## Scenario 2
 
-Aaron wants to use the Octoblu Twitter Account in a flow. Peter is already using that twitter account. Aaron knows the account's password.
+Aaron wants to use the Octoblu Twitter Account in a flow. Peter is already using that Twitter account. Aaron knows the account's password.
+
+So Aaron also visits Octoblu and to add a new Twitter device. Like Peter, he gets bounced out to the **twitter-service** to start the process.
+
+After the **twitter-service** has verified that Aaron has control over the Octoblu Twitter account, it now has the same `account_id`, but a different `access_token`. In fact, in the case of Twitter and many other APIs, the `access_token` that the **twitter-service** retrieved for Peter and stored on the **Credentials Device**, is no longer valid.
+
+The **twitter-service** has to use the `account_id` to find the **Credentials Device** it created for Peter and update the encrypted `access_token` with the new one. Aaron also does not get access to the **Credentials Device**. Nobody but the **twitter-service** does, ever. Stop asking.
+
+Now, the **twitter-service** creates Aaron his own shiny, new **User Device** (**TwitAaron**), setup the same as Peter's **User Device** (**TwitPeter**), except that with Aaron's UUID in the `configure.update` instead of Peter's.
+
+The **twitter-service** will then inform Aaron of that the **TwitPeter** device exists, and will give Aaron the option of removing it's access, resulting in the **twitter-service** removing the **Credentials Device** `message.received` subscription to **TwitPeter**. Aaron chooses not to be a jerk (for once) and leaves **TwitPeter** alone.
+
+Now Aaron can post messages to **TwitAaron**, who will proxy it up to the **Credentials Device**, just like **TwitPeter**.
 
 ## Scenario 3
 
-Erik wants to use the Octoblu Twitter Account in a flow. Aaron and Peter are already using that twitter account. Andrew is just an intern, and cannot be trusted, so they do not want to disclose the password to him.
+Andrew wants to use the Octoblu Twitter Account in a flow. Aaron and Peter are already using that Twitter account. Andrew is just an intern, and cannot be trusted, so they do not want to disclose the password to him.
