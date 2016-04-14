@@ -40,3 +40,9 @@ Now Aaron can post messages to **TwitAaron**, who will proxy it up to the **Cred
 ## Scenario 3
 
 Andrew wants to use the Octoblu Twitter Account in a flow. Aaron and Peter are already using that Twitter account. Andrew is just an intern, and cannot be trusted, so they do not want to disclose the password to him.
+
+Andrew begs Peter to give him access to the Octoblu Twitter Account. After months of ignoring Andrew's groveling, Peter finally relents. He goes through the whole process described in **Scenario 2** to create a second **User Device** for himself, which we will call **TwitAndrew**.
+
+He then adds Andrew to the **TwitAndrew** `configure.update` whitelist, so that when Andrew adds the device to a flow, Octoblu can add that flow to **TwitAndrew**'s `message.from` whitelist.
+
+Andrew promptly abuses his new Tweeting powers by posting a bunch of cat pictures. Peter can now revoke Andrew's access by Oauth the **twitter-service** with Twitter again, and then removing **TwitAndrew** from the list of devices that the **Credentials Device** is subscribed to.
